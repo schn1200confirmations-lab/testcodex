@@ -1,0 +1,14 @@
+{
+  "columns": [
+    "Task",
+    "Owner",
+    "Priority",
+    "Status",
+    "Due Date",
+    "Notes"
+  ],
+  "dropdowns": {
+    "Priority": ["Low", "Medium", "High"],
+    "Status": ["Not Started", "In Progress", "Blocked", "Done"]
+  }
+}
