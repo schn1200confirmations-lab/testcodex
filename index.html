@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Planner Spreadsheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Interactive spreadsheet frontend</p>
+          <h1>Task Planner Dashboard</h1>
+          <p class="hero-copy">
+            View the shared sheet as an editable table, update rows inline, upload new Excel/CSV files,
+            and keep your latest changes saved in the browser.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="resetDataBtn" class="ghost-btn">Reset seeded data</button>
+          <button id="addRowBtn" class="primary-btn">Add row</button>
+        </div>
+      </header>
+
+      <section class="stats-grid" id="statsGrid"></section>
+
+      <section class="toolbar card">
+        <div class="toolbar-group search-wrap">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="Search task, assignee, department, status..." />
+        </div>
+        <div class="toolbar-group">
+          <label for="departmentFilter">Department</label>
+          <select id="departmentFilter"></select>
+        </div>
+        <div class="toolbar-group">
+          <label for="assigneeFilter">Assigned to</label>
+          <select id="assigneeFilter"></select>
+        </div>
+        <div class="toolbar-group">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+        <div class="toolbar-actions">
+          <label class="upload-btn" for="fileInput">Upload Excel / CSV</label>
+          <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,.json" hidden />
+          <button id="exportCsvBtn" class="secondary-btn">Export CSV</button>
+          <button id="exportJsonBtn" class="secondary-btn">Export JSON</button>
+        </div>
+      </section>
+
+      <section class="table-card card">
+        <div class="table-meta">
+          <div>
+            <h2>Planner Table</h2>
+            <p>Double click or focus a cell to edit it. Changes save automatically.</p>
+          </div>
+          <span id="rowCountBadge" class="badge"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <dialog id="rowDialog">
+      <form id="rowForm" method="dialog">
+        <div class="dialog-header">
+          <h3>Add task row</h3>
+          <button type="button" id="closeDialogBtn" class="icon-btn">×</button>
+        </div>
+        <div id="formFields" class="form-grid"></div>
+        <div class="dialog-actions">
+          <button type="button" id="cancelDialogBtn" class="ghost-btn">Cancel</button>
+          <button type="submit" class="primary-btn">Save row</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
