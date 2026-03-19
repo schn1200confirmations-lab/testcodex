@@ -1,13 +1,34 @@
 # Task Planner Starter (Desktop + Localhost)
 
-I updated this project so you can run the planner either as:
+This project now supports:
 
-- **Desktop app** (Tkinter)
+- **Desktop app** (Tkinter + SQLite database)
 - **Localhost web app** (Streamlit + SQLite database)
 
 If you use Cursor and want browser-based usage, use the localhost option below.
 
-## 1) Run as localhost app (recommended)
+## 1) Run as desktop app
+```bash
+python3 task_planner_desktop.py
+```
+
+### Desktop app features
+- Add a task
+- Select an existing row to load it back into the form
+- Update selected task
+- Delete selected task
+- Save all visible tasks to SQLite
+- Reload tasks from SQLite
+- Export tasks to CSV
+
+### Desktop persistence workflow
+1. Fill the form
+2. Click **Add Task**
+3. Click **Save to Database**
+4. Close the app
+5. Reopen the app and saved tasks will be loaded automatically
+
+## 2) Run as localhost app
 
 ### Install dependencies
 ```bash
@@ -25,18 +46,9 @@ Then open:
 - `http://localhost:8501`
 
 ## Data persistence (database backend)
-- The localhost app uses SQLite and creates `task_planner.db` automatically.
-- Workflow:
-  1. Fill fields and click **Add Task**
-  2. Click **Save to Database**
-  3. Close app
-  4. Reopen app and previously saved tasks remain
-- You can also use **Reload from Database** to pull saved data again.
-
-## 2) Run as desktop app
-```bash
-python3 task_planner_desktop.py
-```
+- Both apps use SQLite and create `task_planner.db` automatically.
+- The web app keeps the explicit flow: **Add Task** → **Save to Database**.
+- The desktop app loads saved tasks automatically on startup.
 
 ## Configure columns and dropdown validation
 Edit `planner_config.json`:
