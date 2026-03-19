@@ -7,6 +7,9 @@ import pandas as pd
 import streamlit as st
 
 CONFIG_PATH = Path("planner_config.json")
+DB_PATH = Path("task_planner.db")
+
+from task_db import fetch_tasks, save_tasks
 
 
 def load_config() -> tuple[List[str], Dict[str, List[str]]]:
@@ -65,35 +68,54 @@ def main() -> None:
     st.set_page_config(page_title="Task Planner", layout="wide")
     st.title("Task Planner (localhost starter)")
     st.caption(
-        "Upload your exact Excel columns and dropdown validation values into planner_config.json "
-        "to mirror your existing planner."
+        "Now backed by SQLite. Click 'Save to Database' so data is available next time the app opens."
     )
 
     columns, dropdowns = load_config()
 
     if "tasks" not in st.session_state:
-        st.session_state.tasks = []
+        st.session_state.tasks = fetch_tasks(columns)
 
     with st.form("task_form"):
         task_values = build_form(columns, dropdowns)
         add_clicked = st.form_submit_button("Add Task")
 
-    action_col1, action_col2 = st.columns([1, 1])
+    row1_col1, row1_col2, row1_col3 = st.columns([1, 1, 1])
 
-    with action_col1:
+    with row1_col1:
+        if st.button("Save to Database"):
+            save_tasks(st.session_state.tasks)
+            st.success(f"Saved {len(st.session_state.tasks)} task(s) to {DB_PATH}.")
+
+    with row1_col2:
+        if st.button("Reload from Database"):
+            st.session_state.tasks = fetch_tasks(columns)
+            st.success("Reloaded latest saved tasks from database.")
+            st.rerun()
+
+    with row1_col3:
         if st.button("Clear Current Inputs"):
             reset_fields(columns, dropdowns)
             st.rerun()
 
-    with action_col2:
-        if st.button("Clear All Tasks"):
+    row2_col1, row2_col2 = st.columns([1, 1])
+
+    with row2_col1:
+        if st.button("Clear In-Memory Task List"):
             st.session_state.tasks = []
+            st.info("Cleared current in-memory task list. Click Save to persist this change.")
+
+    with row2_col2:
+        if st.button("Delete All Saved Tasks"):
+            st.session_state.tasks = []
+            save_tasks([])
+            st.warning("Deleted all saved tasks from database.")
             st.rerun()
 
     if add_clicked:
         if any(str(v).strip() for v in task_values.values()):
             st.session_state.tasks.append(task_values)
-            st.success("Task added.")
+            st.success("Task added. Click 'Save to Database' to persist it.")
         else:
             st.warning("Enter at least one field before adding a task.")
 

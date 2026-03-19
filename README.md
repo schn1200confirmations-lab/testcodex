@@ -3,7 +3,7 @@
 I updated this project so you can run the planner either as:
 
 - **Desktop app** (Tkinter)
-- **Localhost web app** (Streamlit)
+- **Localhost web app** (Streamlit + SQLite database)
 
 If you use Cursor and want browser-based usage, use the localhost option below.
 
@@ -23,6 +23,15 @@ streamlit run task_planner_web.py
 
 Then open:
 - `http://localhost:8501`
+
+## Data persistence (database backend)
+- The localhost app uses SQLite and creates `task_planner.db` automatically.
+- Workflow:
+  1. Fill fields and click **Add Task**
+  2. Click **Save to Database**
+  3. Close app
+  4. Reopen app and previously saved tasks remain
+- You can also use **Reload from Database** to pull saved data again.
 
 ## 2) Run as desktop app
 ```bash
